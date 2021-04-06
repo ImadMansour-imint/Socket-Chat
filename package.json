@@ -1,7 +1,7 @@
 {
   "name": "chat",
   "version": "1.0.0",
-  "description": "",
+  "description": "####  authentication, login and private chat : public room and fix bugs : public room, private chat and set up socket.io events",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -14,5 +14,6 @@
     "shortid": "^2.2.8",
     "socket.io": "^1.7.3",
     "uuid": "^3.0.1"
-  }
+  },
+  "keywords": []
 }

@@ -13,23 +13,54 @@ const Token = require('./user.js').Token;
 let user = [];
 let token = [];
 
-app.get('/', (req, res) => {
+
+//cette fonction pour la creation de ID groupe , chat ou appel video soit unique
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
+
+ const id = makeid(10)
+
+
+
+ //creation d'API Page login
+app.get(`/`, (req, res) => {
     res.sendFile(__dirname + '/views/login.html');
 });
+
+
 //==========================================
-// Routing: 
-app.get('/chat', (req, res) => {
+// creation de la page d'accueil ou la page pricipal de chat 
+app.get(`/chat`, (req, res) => {
+
+    //servir la page html pour ce route
     res.sendFile(__dirname + '/views/index.html');
+    res.redirect(`/chat/${id}`);
 });
+
+
+//creation de route dynamic pour chaque chat page
+app.get('/chat/:id',(req,res)=>{
+    res.sendFile(__dirname + '/views/index.html');
+
+})
 
 const allRoomObj = {};
 const roomList = {};
 const allPrivateRoom = {};
+
+
 //==============================================
-// ROOM FUNCTIONS
+// GROUPE FONCTIONS
 //==============================================
 /**
- * Create a room function
+ * Créer fonction de groupe
  * @param {*} roomName - received from client-side
  * @param {*} clientID - received from client-side
  */
@@ -136,7 +167,6 @@ const createPrivateRoom = (senderId, receiverId, senderName, receiverName) => {
         let newPrivateRoom = new PrivateRoom(senderId, receiverId, senderName, receiverName);
         newPrivateRoom.addClient(receiverId);
         let roomId = newPrivateRoom.id;
-        console.log(roomId);
         allPrivateRoom[roomId] = newPrivateRoom;
         return roomId;
     }

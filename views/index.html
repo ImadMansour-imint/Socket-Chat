@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
+
     <title>Socket.IO chat</title>
     <style>
         * {
@@ -12,6 +14,7 @@
 
         body {
             font: 16px Helvetica, Arial;
+            background-color: #f2f2f2;
         }
 
         ul {
@@ -27,7 +30,7 @@
         #user_list,
         #room_list {
             margin: 10px;
-            border: 2px solid black;
+            border: 1px solid rgb(182, 178, 178);
         }
 
         #user_list div,
@@ -35,17 +38,43 @@
             padding: 10px;
         }
 
-        .chat_box {
+        .chat_box-main {
             margin: 10px;
             /*width: 80%;*/
-            border: 2px solid black;
+            border: 1px solid rgb(182, 178, 178);
+            width: 100%;
+            max-height: 300px;
+        }
+        .chat_box{
+            /*width: 80%;*/
+            border: 1px solid rgb(182, 178, 178);
+            width: 400px;
+            max-height: 300px;
+            margin-bottom: 5px;
+            margin-left: -5px;
+            background-color: white;
+        }
+        #main_box{
+            min-height:100px;
+            max-height: 300px;
+            background-color: white;
+            overflow-y: scroll;
+
         }
 
         .chat_form {
-            background: #000;
             padding: 3px;
-            margin: 20px;
+            margin: auto;
+            margin-bottom: 5px;
+            height: 37px;
             width: 80%;
+            border: 1px solid rgb(182, 178, 178);
+            background-color: white;
+
+
+        }
+        .private_container{
+            width: 100%;
         }
 
         .chat_form input {
@@ -55,50 +84,279 @@
             margin-right: .5%;
         }
 
-        .chat_form button {
+        /* .chat_form button {
             width: 29%;
             background: rgb(16, 48, 141);
             border: none;
-            padding: 10px;
+            padding: 15px;
+        } */
+        .button {
+            width: 29%;
+            background: rgb(16, 48, 141);
+            border: none;
+            padding: 15px;
+            position: absolute;
         }
 
         .private_box {
             margin: 10px;
-            border: 2px solid deepskyblue;
+            border: 1px solid  rgb(182, 178, 178);
+            background-color: white;
+
         }
 
         .private_form button {
             background: deepskyblue;
         }
+        .button-chat{
+            background-color: #e1a70a;
+            border: 0;
+            height: 30px !important;
+            padding: 5px;
+            border-radius: 2px;
+        }
+        #room_list{
+            width: 96%;
+            max-height: 400px;
+            overflow-y: scroll;
+            background-color: white;
+
+        }
+        #room_name{
+            height: 30px;
+            border-radius: 2px;
+            margin-left: 10px;
+            border:1px solid rgb(182, 178, 178); 
+            margin-top: 20px;   
+            background-color: white;
+    
+            }
+        
+        #user_list{
+            width: 400px;
+            height: 210px;
+            max-height: 330px;
+            margin-left: 31%;
+            overflow-y: scroll;
+            top: 0;
+            background-color: white;
+
+        }
+            button{
+                background-color: #e1a70a;
+                border: 0;
+                padding: 5px;
+                border-radius: 3px;
+                margin-left: 5px;
+            }
+        .send-button{
+            background-color: #e1a70a !important;
+            border: 0;
+            height: 25px;
+        }
+        #main_msg_form{
+            border:1px solid rgb(182, 178, 178) !important; 
+            height: 30px !important;
+        }
+        .chat_form {
+            height: 37px !important;
+            position: relative;
+        }
+        .button{
+            background-color: #e1a70a !important;
+            height: 30px !important;
+        }
+        .container{
+            display: flex;
+            flex-direction: row;
+        }
+        .containerr{
+            display: block;
+        }
+        .list-message{
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+        .firstContainer{
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+        }
+        #user_list{
+            margin: unset;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        .bigDiv{
+            display: flex;
+            max-width: 50%;
+        }
+        .leftDiv{
+            display: block;
+            max-width: 490px;
+        }
+        .right{
+            display: block;
+        }
+        .input-inside{
+            padding: 0 !important;
+            position: absolute;
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .username{
+            color:rgb(145, 137, 137) ;
+            font-size: 14px;
+            font-weight: 100;
+        }
+        .img-send{
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+        }
+        .send-button-inside{
+            background-color: #00B2FF !important;
+            position: absolute;
+            right: 0 !important;
+            top: 0 !important;
+            height: 100%;
+            border-radius: 0 !important;
+        }
+        .videoChat{
+            display: flex;
+            background-color: black;
+            height: 100vh;
+            right: 0;
+            position: fixed;
+            top: 70px;
+            flex-wrap: wrap;
+            max-width: 50%;
+            min-width: 49%;
+            margin-left: 10px;
+            overflow-y: scroll;
+        }
+        .video-div{
+            width: 100%;
+            height: 300px;
+            background-color: #f2f2f2;
+            margin-top: 30px;
+            margin-left: 30px;
+            flex-wrap: wrap;
+
+        }
+        .mydiv-video{
+            width: 100%;
+            height: 300px;
+            margin-top: 30px;
+            margin-left: 30px;
+            flex-wrap: wrap;
+            display: inline;
+        }
+        video {
+      max-width: calc(50% - 100px);
+      margin: 0 5px;
+      box-sizing: border-box;
+      border-radius: 2px;
+      padding: 0;
+      box-shadow: rgba(156, 172, 172, 0.2) 0px 2px 2px, rgba(156, 172, 172, 0.2) 0px 4px 4px, rgba(156, 172, 172, 0.2) 0px 8px 8px, rgba(156, 172, 172, 0.2) 0px 16px 16px, rgba(156, 172, 172, 0.2) 0px 32px 32px, rgba(156, 172, 172, 0.2) 0px 64px 64px;
+    }
+    .nav-bar{
+        width: 100%;
+        height: 60px;
+        background-color: white;
+    }
+    .logo{
+        margin: auto;
+        width: 100px;
+        height: 40px;
+        top: 0px;
+        position: relative;
+    }
+    .logo-text{
+        margin-top: 19px;
+        position: absolute;
+        font-size: 23px;
+        margin-left: -15px;
+        font-weight: bold;
+        color: #00B2FF;
+    }
+    .logout-text{
+        font-weight: bold;
+        color: #00B2FF;
+        position: absolute;
+        right: 30px;
+        font-size: 16px;
+        top: 26px;
+        cursor: pointer;
+    }
+    .blue-text{
+        color: #00B2FF;
+        font-weight: bold;
+        margin-left: 10px;
+        top: 10px;
+    }
+    .test{
+        width: 100px;
+        height: 200px;
+        background-color: red;
+    }
+    .altVideo{
+        background-color: white;
+        margin: auto;
+        color: black;
+    }
     </style>
 </head>
 
 <body>
-    <div id="room_list">
-        <b>ROOMS</b>
-        <div id="room"></div>
-        <form id="room_form" action="">
-            <input type="text" name="message" id="room_name" placeholder="enter room name..." autocomplete="off" /><button>CREATE ROOM</button>
-        </form>
-    </div>
+    <div class="nav-bar">
+        <div class="logo">
+            <span class="logo-text">téléconférence</span>
+        </div>
+        <a href="/"> <span class="logout-text">Se Déconnecté</span></a>
 
-    <div id="user_list">
-        <b>USERS</b>
-        <div id="user"></div>
     </div>
-
-    <div class="container">
-        <div class="chat_box" id="main_box"> <strong> Main Notification Box </strong>
-            <ul id="main_msg"></ul>
-            <form class="chat_form" id="main_msg_form" action="">
-                <input type="text" name="message" id="main_m" autocomplete="off" /><button>Send</button>
-            </form>
+    <div class="bigDiv">
+        <div class="leftDiv">
+            <div id="room_list">
+                <b class='blue-text'> Créer un groupe</b>
+                <form id="room_form" action="">
+                    <input type="text" name="message" id="room_name" placeholder="enter room name..." autocomplete="off" /><button class="button-chat">CREATE ROOM</button>
+                </form>
+                <div id="room"></div>
+            </div>
+        
+            <div class="container">
+                <div class="chat_box-main" id="main_box"> <strong class='blue-text'> Boite de Notification  </strong>
+                    <ul id="main_msg"></ul>
+                </div>
+            </div>
+        
+            <div class="private_container"></div>
+        </div>
+        
+    
+    
+        <div class="rightDiv">
+    
+            <div id="user_list">
+                <b class='blue-text'>Utilisateurs</b>
+                <div id="user"></div>
+            </div>
+    
+            <div class="containerr">
+            </div>
+        
+        </div>
+        <div  class="videoChat">
+            <video class="mydiv-video" id="myVideo" autoplay="true" ></video>
+            <div id="video-div"></div>
         </div>
     </div>
+   
 
-    <div class="private_container">
-
-    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -119,6 +377,7 @@
             socket.on('user connect', (connectClient, roomList, user) => {
                 updateRoomList(roomList);
                 updateUserList(user);
+                AddVideoDisplay(user);
                 $("#main_msg").append(`<li> ${connectClient.username} connected to the chat room </li>`);
             })
 
@@ -262,11 +521,29 @@
                     });
                 });
             }
+
+            const AddVideoDisplay = async (user) => {
+                $('#video-div').empty();
+                $.each(user, (index, value) => {
+                    if (clientId !== value.id) {
+                        $('#video-div').append(`<video  class="video-div" id="localVideo"  autoplay muted></video>`);
+                }
+                // if (clientId == value.id) {
+                //         $('#video-div').append(`<video id="localVideo" class="video-div" id="myVideo" autoplay ></video>`)
+                        
+                // }
+
+                });
+                                   
+                
+
+            }
+            
             // when a new room is created -> create a new chat box div
             const createPrivateChat = (roomId, roomName) => {
                 $('.private_container').append(
-                    `<div id=${roomId}_box class="private_box"> <strong> ${roomName} </strong> <ul id="${roomId}_msg"></ul> <form class="chat_form private_form"  id = "${roomId}_msg_form" action="">
-            <input type="text" name="message" id="${roomId}_m" autocomplete="off" /><button>Send</button></form> </div>`
+                    `<div id=${roomId}_box class="private_box"> <strong> ${roomName} </strong> <ul id="${roomId}_msg" class="list-message"></ul> <form class="chat_form private_form"  id = "${roomId}_msg_form" action="">
+            <input type="text" name="message"  id="${roomId}_m" class="input-inside" autocomplete="off" /><button class="send-button-inside"><img src="https://icon-library.com/images/send-message-icon/send-message-icon-1.jpg" alt="err" class="img-send" ></img></button></form> </div>`
                 );
                 // add submit msg event to new chat box
                 $(`#${roomId}_msg_form`).submit(() => {
@@ -282,9 +559,9 @@
             }
             // when a new room is created -> create a new chat box div
             const createChatBox = (roomId, roomName) => {
-                $('.container').append(
-                    `<div id=${roomId}_box class="chat_box"> <strong> ${roomName} </strong> <ul id="${roomId}_msg"></ul> <form class="chat_form" id = "${roomId}_msg_form" action="">
-            <input type="text" name="message" id="${roomId}_m" autocomplete="off" /><button>Send</button></form> </div>`
+                $('.containerr').append(
+                    `<div id=${roomId}_box class="chat_box"> <strong> ${roomName} </strong> <ul id="${roomId}_msg" class="list-message"></ul> <form class="chat_form" id = "${roomId}_msg_form" action="">
+                   <input type="text" name="message"  id="${roomId}_m" class="input-inside" autocomplete="off" /><button class="send-button-inside"><img src="https://icon-library.com/images/send-message-icon/send-message-icon-1.jpg"  class="img-send"alt="err"></img></button></form> </div>`
                 );
                 // add submit msg event to new chat box
                 $(`#${roomId}_msg_form`).submit(() => {
@@ -304,6 +581,19 @@
                     `<li><strong class="username">${username}</strong> : ${message}</li>`);
             }
         });
+
+    </script>
+    <script>
+var video =  document.querySelector("#myVideo");
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (stream) {
+      video.srcObject = stream;
+    })
+    .catch(function (err0r) {
+      console.log(err0r);
+    });
+} 
     </script>
 </body>
 
